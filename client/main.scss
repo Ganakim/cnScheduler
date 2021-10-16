@@ -1,0 +1,182 @@
+// Variables
+$directions: (
+  t: top,
+  l: left,
+  r: right,
+  b: bottom,
+);
+// Bootstrap overrides
+$enable-responsive-font-sizes: true;
+$sizes: (
+  0: 0,
+  5: 5%,
+  10: 10%,
+  15: 15%,
+  20: 20%,
+  25: 25%,
+  30: 30%,
+  35: 35%,
+  40: 40%,
+  45: 45%,
+  50: 50%,
+  55: 55%,
+  60: 60%,
+  65: 65%,
+  70: 70%,
+  75: 75%,
+  80: 80%,
+  85: 85%,
+  90: 90%,
+  95: 95%,
+  100: 100%,
+  auto: auto,
+);
+$theme-colors: (
+  "modal": rgba(100, 100, 100, 0.2),
+);
+@each $abbrev, $prop in $directions {
+  @each $size, $length in $sizes {
+    .#{$abbrev}-#{$size} {
+      #{$prop}: $length !important;
+    }
+  }
+}
+
+@import "{}/node_modules/bootstrap/scss/bootstrap.scss";
+
+.text-none {
+  color: rgba(0, 0, 0, 0);
+}
+.hidden {
+  display: none !important;
+  border: none !important;
+  outline: none !important;
+}
+.invisible {
+  opacity: 0;
+}
+.c-pointer {
+  cursor: pointer;
+}
+.c-default {
+  cursor: default;
+}
+.t-0 {
+  top: 0;
+}
+.b-0 {
+  bottom: 0;
+}
+.l-0 {
+  left: 0;
+}
+.r-0 {
+  right: 0;
+}
+.f-1 {
+  flex: 1;
+}
+
+.pill {
+  @extend .bg-light;
+  @extend .px-2;
+  border-radius: 1em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+  #NodePicker{
+    max-height: 200px;
+    [id*=-Remove]{
+      @extend .text-secondary;
+      &:hover{
+        @extend .text-danger;
+      }
+    }
+  }
+  .dayCard{
+    .card-body{
+      height: 500px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+    
+    [id*=-NodeGrid]{
+      z-index: 1;
+      pointer-events: none;
+      &>.nodeBox>small{
+        transform: translate(0, -48%);
+      }
+    }
+    [id*=-NodeOverlay]{
+      z-index: 0;
+      overflow: visible;
+      .node{
+        position: absolute;
+        .moveStart, .moveEnd{
+          width: 100%;
+          height: 6px;
+          border-radius: 3px;
+          cursor: ns-resize;
+          &:hover{
+            background-color: rgba(0, 0, 0, .5);
+          }
+        }
+        &[resizing]{
+          @extend .bg-primary;
+          .moveStart, .moveEnd{
+            height: 10px;
+            border-radius: 5px;
+          }
+        }
+        .moveStart{
+          transform: translate(0, -50%);
+        }
+        .moveEnd{
+          transform: translate(0, 50%);
+        }
+      }
+      #OverlayIndicator{
+        z-index: 2;
+        left: -12px;
+      }
+    }
+    [id*=-NodeOverlay][handles=false]{
+      .moveStart, .moveEnd{
+        pointer-events: none;
+        display: none;
+      }
+    }
+  }
+}
+
+*[dropdown=false] {
+  @extend .hidden;
+}
+
+[style*="--aspect-ratio"] > :first-child {
+  width: 100%;
+}
+[style*="--aspect-ratio"] > img {
+  height: auto;
+}
+@supports (--custom: property) {
+  [style*="--aspect-ratio"] {
+    position: relative;
+  }
+  [style*="--aspect-ratio"]::before {
+    content: "";
+    display: block;
+    padding-bottom: calc(100% / (var(--aspect-ratio)));
+  }
+  [style*="--aspect-ratio"] > :first-child {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+  }
+}

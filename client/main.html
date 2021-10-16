@@ -1,0 +1,71 @@
+<head>
+  <title>CN-Schedule Builder</title>
+  <script src="https://kit.fontawesome.com/e5cefe8111.js" crossorigin="anonymous"></script>
+  <meteor-bundled-js/>
+</head>
+
+<body>
+  <div class="w-100 d-flex flex-column align-items-center mb-4 mt-2">
+    <h3>Week of:</h3>
+    <input type="date" id="WeekPicker">
+    <div class="d-flex justify-content-between align-items-center w-30">
+      <i id="PrevWeek" class="fas fa-chevron-left m-2 c-pointer"></i>
+      {{formatTime (get "week.0") "ddd MMM Do"}} - {{formatTime (get "week.6") "ddd MMM Do"}}
+      <i id="NextWeek" class="fas fa-chevron-right m-2 c-pointer"></i>
+    </div>
+  </div>
+  {{#if (logic "!" (get "editSchedule"))}}
+    <div id="NodePicker" class="d-flex flex-column align-items-start align-content-start flex-wrap m-2 p-1 border border-dark rounded">
+      {{#each search "Schedules" false false}}
+        <div class="d-flex align-items-center m-1 mr-4">
+          <div class="d-flex flex-column border border-dark rounded p-1">
+            {{name}}
+            <div class="pb-2 w-100 border" style="background-color: {{color}};"></div>
+          </div>
+          <input type="checkbox" id="{{_id}}-Activate" class="mx-1" checked="{{active}}">
+          <i id="{{_id}}-Edit" class="fas fa-edit ml-1 text-secondary c-pointer"></i>
+          <i id="{{_id}}-Remove" class="fas fa-trash ml-1 c-pointer"></i>
+        </div>
+      {{/each}}
+      <i id="AddSchedule" class="btn btn-primary fas fa-plus m-1 px-4"></i>
+    </div>
+  {{/if}}
+  <div class="card">
+    <div class="card-header d-flex align-items-center">
+      {{#if (get "editSchedule")}}
+        Name:<input type="text" id="ScheduleName" class="mx-1" value="{{get 'editSchedule.name'}}">
+        Color:<input type="color" id="ScheduleColor" class="mx-1 c-pointer" value="{{get 'editSchedule.color'}}">
+        <div id="{{get 'editSchedule._id'}}-Save" class="btn ml-auto btn-success">Done</div>
+      {{else}}
+        <h3>Schedule:</h3>
+        <div id="ScheduleWeek" class="btn btn-primary ml-auto">Schedule Week</div>
+        <i id="ScheduledWeek" class="far fa-check fa-2x text-success ml-auto" style="display:none;"></i>
+      {{/if}}
+    </div>
+    <div class="card-body d-flex p-2">
+      {{#each get "week"}}
+        <div class="card dayCard f-1 {{#if @index}}ml-1{{/if}}">
+          <div class="card-header">
+            {{formatTime this "dddd"}}
+            {{#if (logic "!" (get "editSchedule"))}}
+              <br>
+              <small class="text-muted">{{formatTime this "MMM Do"}}</small>
+            {{/if}}
+          </div>
+          <div class="card-body position-relative px-0">
+            <div id="{{this}}-NodeGrid" class="position-absolute w-95">
+              {{#each grid}}
+                <div class="d-flex nodeBox">
+                  <small class="text-muted text-right w-15 pr-1">{{#if @index}}{{formatTime this "h"}}{{/if}}</small>
+                  <div  class="border border-dark {{#if @index}}border-top-0{{/if}} w-85" style="min-height: 20px;"></div>
+                </div>
+              {{/each}}
+            </div>
+            <div id="{{this}}-NodeOverlay" class="position-absolute l-15 h-100 w-80"></div>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+  
+</body>
