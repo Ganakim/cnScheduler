@@ -14,7 +14,7 @@ Template.body.onCreated(()=>{
   Session.set('resizeNodeY', null)
   setTimeout(()=>showWeek(moment().startOf('week')), 100)
 })
-
+let money = '0'
 Template.body.helpers({
   grid(){
     let hours = []
@@ -24,9 +24,18 @@ Template.body.helpers({
     }
     return hours
   },
+  money(){
+    return money
+  }
 })
 
 Template.body.events({
+  'click .fa-chevron-left'(){
+    money
+  },
+  'click .fa-chevron-left'(){
+
+  },
   'click [dropdown]'(e){
     const target = $(e.target).closest('[dropdown]')
     const dropTarget = $(target.attr('dropdown'))

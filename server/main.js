@@ -4,8 +4,7 @@ import '/lib/collections'
 
 Meteor.startup(()=>{
   const { exec } = require("child_process")
-  let command = process.platform == 'win32' ? 'chrome.exe --remote-debugging-port=9222 --user-data-dir="C:\selenum\ChromeProfile"' : 'Google\ Chrome --remote-debugging-port=9222 --user-data-dir="~/ChromeProfile"'
-  exec(command, (err, res)=>{
+  exec('chrome.exe --remote-debugging-port=9222 --user-data-dir="C:\selenum\ChromeProfile"', (err, res)=>{
     if(err){
       console.log(err)
     }else{
